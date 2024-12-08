@@ -4,7 +4,9 @@ import { ThemeContextProvider } from './contexts/theme';
 import { useEffect, useState } from 'react';
 
 function App() {
-  const [themeMode, setThemeMode] = useState('light');
+  const [themeMode, setThemeMode] = useState(
+    () => localStorage.getItem('themeMode') || 'light'
+  );
 
   const lightTheme = () => {
     setThemeMode('light');
@@ -17,7 +19,9 @@ function App() {
   useEffect(() => {
     document.querySelector('html').classList.remove('light', 'dark');
     document.querySelector('html').classList.add(themeMode);
+    localStorage.setItem('themeMode', themeMode);
   }, [themeMode]);
+
   return (
     <ThemeContextProvider value={{ themeMode, lightTheme, darkTheme }}>
       <div className='flex flex-wrap min-h-screen items-center dark:bg-sky-950 dark:border-sky-950'>
